@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesso - Generatore di Preventivi Italiani</title>
+    <link rel="stylesheet" href="login-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <h1>Preventivi<span>Pro</span></h1>
+                </div>
+                <p class="subtitle">Sistema di Gestione Preventivi Professionali</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Nome utente" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkmark"></span>
+                        Ricordami
+                    </label>
+                    <a href="#" class="forgot-password">Password dimenticata?</a>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Accedi
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>&copy; 2025 PreventiviPro. Tutti i diritti riservati.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#">Termini di Servizio</a>
+                    <span>•</span>
+                    <a href="#">Supporto</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features-panel">
+            <h2>Sistema Sicuro e Professionale</h2>
+            <div class="security-notice">
+                <i class="fas fa-shield-alt"></i>
+                <p><strong>Sistema Protetto:</strong> Accesso riservato agli utenti autorizzati. 
+                Dopo 3 tentativi falliti, l'account verrà bloccato per 15 minuti.</p>
+            </div>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-lock"></i>
+                    <div>
+                        <h3>Autenticazione Sicura</h3>
+                        <p>Sistema di login con protezione anti-brute force</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-user-shield"></i>
+                    <div>
+                        <h3>Sessioni Protette</h3>
+                        <p>Auto-logout per inattività e gestione sicura delle sessioni</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-database"></i>
+                    <div>
+                        <h3>Dati Locali</h3>
+                        <p>Tutti i dati rimangono sul tuo dispositivo</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-file-contract"></i>
+                    <div>
+                        <h3>Conformità Normativa</h3>
+                        <p>Preventivi conformi alla legislazione italiana</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Accesso in corso...</p>
+    </div>
+    
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Errore di Accesso</h3>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">Credenziali non valide. Riprova.</p>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeErrorModal()" class="btn-close">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="login-script.js"></script>
+</body>
+</html>

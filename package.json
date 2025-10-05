@@ -1,0 +1,40 @@
+{
+  "name": "generatore-preventivi-italiani",
+  "version": "1.0.0",
+  "description": "Applicazione web per la generazione di preventivi conformi alla normativa italiana",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "deploy": "gh-pages -d .",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/invoice-generator.git"
+  },
+  "keywords": [
+    "preventivi",
+    "italia",
+    "iva",
+    "quote",
+    "estimate",
+    "generator",
+    "pdf",
+    "javascript",
+    "web-app"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/username/invoice-generator/issues"
+  },
+  "homepage": "https://username.github.io/invoice-generator",
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 11"
+  ]
+}

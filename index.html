@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Preventivi Italiani</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Session Check Script -->
+    <script>
+        // Check authentication before loading the page
+        function checkAuthentication() {
+            const sessionData = localStorage.getItem('preventiviPro_session');
+            const sessionExpiry = localStorage.getItem('preventiviPro_session_expiry');
+            
+            if (!sessionData || !sessionExpiry) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            const currentTime = new Date().getTime();
+            const expiryTime = parseInt(sessionExpiry);
+            
+            if (currentTime > expiryTime) {
+                localStorage.removeItem('preventiviPro_session');
+                localStorage.removeItem('preventiviPro_session_expiry');
+                alert('Sessione scaduta. Effettua nuovamente il login.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Check authentication immediately
+        if (!checkAuthentication()) {
+            document.body.style.display = 'none';
+        }
+    </script>
+
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <h1><i class="fas fa-file-invoice"></i> Generatore di Preventivi Italiani</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="currentUser">Utente</span>
+                    <button id="logoutBtn" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+            <h1><i class="fas fa-file-invoice"></i> Generatore di Preventivi Italiani</h1>
+            <div class="actions">
+                <button id="fillSample" class="btn btn-secondary">
+                    <i class="fas fa-magic"></i> Dati Esempio
+                </button>
+                <button id="addField" class="btn btn-secondary">
+                    <i class="fas fa-plus"></i> Aggiungi Campo
+                </button>
+                <button id="preview" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> Anteprima
+                </button>
+                <button id="print" class="btn btn-success">
+                    <i class="fas fa-print"></i> Stampa
+                </button>
+                <button id="exportPdf" class="btn btn-danger">
+                    <i class="fas fa-file-pdf"></i> Esporta PDF
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Informazioni Azienda -->
+            <section class="company-info">
+                <h2>Informazioni Azienda</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="companyName">Ragione Sociale *</label>
+                        <input type="text" id="companyName" placeholder="Nome della tua azienda">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyAddress">Indirizzo *</label>
+                        <input type="text" id="companyAddress" placeholder="Via, Numero Civico">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyCity">Città *</label>
+                        <input type="text" id="companyCity" placeholder="Città">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyCAP">CAP *</label>
+                        <input type="text" id="companyCAP" placeholder="00000">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyProvince">Provincia *</label>
+                        <input type="text" id="companyProvince" placeholder="XX" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyPIVA">Partita IVA *</label>
+                        <input type="text" id="companyPIVA" placeholder="IT00000000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyCF">Codice Fiscale</label>
+                        <input type="text" id="companyCF" placeholder="Codice Fiscale">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyPhone">Telefono</label>
+                        <input type="tel" id="companyPhone" placeholder="+39 000 000 0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyEmail">Email</label>
+                        <input type="email" id="companyEmail" placeholder="info@azienda.it">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyPEC">PEC</label>
+                        <input type="email" id="companyPEC" placeholder="pec@azienda.it">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Informazioni Cliente -->
+            <section class="client-info">
+                <h2>Informazioni Cliente</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="clientName">Nome/Ragione Sociale *</label>
+                        <input type="text" id="clientName" placeholder="Nome del cliente">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientAddress">Indirizzo *</label>
+                        <input type="text" id="clientAddress" placeholder="Via, Numero Civico">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCity">Città *</label>
+                        <input type="text" id="clientCity" placeholder="Città">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCAP">CAP *</label>
+                        <input type="text" id="clientCAP" placeholder="00000">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientProvince">Provincia *</label>
+                        <input type="text" id="clientProvince" placeholder="XX" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPIVA">Partita IVA</label>
+                        <input type="text" id="clientPIVA" placeholder="IT00000000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCF">Codice Fiscale</label>
+                        <input type="text" id="clientCF" placeholder="Codice Fiscale">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Informazioni Preventivo -->
+            <section class="invoice-info">
+                <h2>Informazioni Preventivo</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="invoiceNumber">Numero Preventivo *</label>
+                        <input type="text" id="invoiceNumber" placeholder="2024/001">
+                    </div>
+                    <div class="form-group">
+                        <label for="invoiceDate">Data Preventivo *</label>
+                        <input type="date" id="invoiceDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Data Scadenza Offerta</label>
+                        <input type="date" id="dueDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Modalità di Pagamento</label>
+                        <select id="paymentMethod">
+                            <option value="Bonifico Bancario">Bonifico Bancario</option>
+                            <option value="Contanti">Contanti</option>
+                            <option value="Assegno">Assegno</option>
+                            <option value="Carta di Credito">Carta di Credito</option>
+                            <option value="PayPal">PayPal</option>
+                            <option value="Altro">Altro</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Campi Personalizzati -->
+            <section class="custom-fields">
+                <h2>Campi Personalizzati</h2>
+                <div id="customFieldsContainer" class="form-grid">
+                    <!-- I campi personalizzati verranno aggiunti qui dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Articoli/Servizi -->
+            <section class="items-section">
+                <h2>Articoli/Servizi</h2>
+                <div class="table-container">
+                    <table id="itemsTable">
+                        <thead>
+                            <tr>
+                                <th>Descrizione</th>
+                                <th>Quantità</th>
+                                <th>Prezzo Unitario (€)</th>
+                                <th>IVA (%)</th>
+                                <th>Totale (€)</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsBody">
+                            <tr class="item-row">
+                                <td><input type="text" class="item-description" placeholder="Descrizione prodotto/servizio"></td>
+                                <td><input type="number" class="item-quantity" value="1" min="0" step="0.01"></td>
+                                <td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>
+                                <td>
+                                    <select class="item-vat">
+                                        <option value="0">0%</option>
+                                        <option value="4">4%</option>
+                                        <option value="5">5%</option>
+                                        <option value="10">10%</option>
+                                        <option value="22" selected>22%</option>
+                                    </select>
+                                </td>
+                                <td class="item-total">€0.00</td>
+                                <td>
+                                    <button class="btn-remove" onclick="removeItem(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button id="addItem" class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> Aggiungi Articolo
+                    </button>
+                </div>
+            </section>
+
+            <!-- Totali -->
+            <section class="totals-section">
+                <h2>Riepilogo</h2>
+                <div class="totals-container">
+                    <div class="totals-grid">
+                        <div class="total-row">
+                            <span>Imponibile:</span>
+                            <span id="subtotal">€0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>IVA:</span>
+                            <span id="vatAmount">€0.00</span>
+                        </div>
+                        <div class="total-row discount-row">
+                            <span>Sconto:</span>
+                            <div class="discount-input">
+                                <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01">
+                                <span>%</span>
+                                <span id="discountAmount">€0.00</span>
+                            </div>
+                        </div>
+                        <div class="total-row final-total">
+                            <span>TOTALE:</span>
+                            <span id="finalTotal">€0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Note -->
+            <section class="notes-section">
+                <h2>Note</h2>
+                <textarea id="notes" placeholder="Note aggiuntive, condizioni di pagamento, ecc."></textarea>
+            </section>
+        </div>
+
+        <!-- Anteprima Fattura -->
+        <div id="invoicePreview" class="invoice-preview" style="display: none;">
+            <div class="invoice-container">
+                <div id="invoiceContent">
+                    <!-- Il contenuto della fattura verrà generato qui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per aggiungere campi personalizzati -->
+    <div id="customFieldModal" class="modal">
+        <div class="modal-content">
+            <h3>Aggiungi Campo Personalizzato</h3>
+            <div class="form-group">
+                <label for="fieldName">Nome Campo:</label>
+                <input type="text" id="fieldName" placeholder="Nome del campo">
+            </div>
+            <div class="form-group">
+                <label for="fieldType">Tipo Campo:</label>
+                <select id="fieldType">
+                    <option value="text">Testo</option>
+                    <option value="number">Numero</option>
+                    <option value="date">Data</option>
+                    <option value="email">Email</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelField" class="btn btn-secondary">Annulla</button>
+                <button id="saveField" class="btn btn-primary">Salva</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
