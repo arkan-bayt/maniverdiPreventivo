@@ -628,6 +628,7 @@ function getItems() {
         const price = parseFloat(row.querySelector('.item-price').value) || 0;
         const vat = parseFloat(row.querySelector('.item-vat').value) || 0;
         
+        // إدراج العنصر إذا كان هناك وصف أو سعر أكبر من 0
         if (description.trim() || price > 0) {
             // إذا كانت الكمية 0 والسعر موجود، المجموع = السعر
             // إذا كانت الكمية أكبر من 0، المجموع = الكمية × السعر
@@ -641,7 +642,7 @@ function getItems() {
             }
             
             items.push({
-                description: description || 'Prodotto/Servizio',
+                description: description || 'Servizio/Prodotto', // وصف افتراضي إذا كان فارغاً
                 quantity: quantity,
                 price: price,
                 vat: vat,
