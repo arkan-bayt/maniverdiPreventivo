@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generatore di Preventivi Italiani</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="print-enhancements.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -78,31 +79,36 @@
         <div class="main-content">
             <!-- Informazioni Azienda -->
             <section class="company-info">
-                <h2>Informazioni Azienda</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Informazioni Azienda</h2>
+                    <button id="clearCompanyInfo" class="btn btn-secondary" style="font-size: 12px; padding: 5px 10px;">
+                        <i class="fas fa-eraser"></i> Pulisci Campi
+                    </button>
+                </div>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="companyName">Ragione Sociale *</label>
-                        <input type="text" id="companyName" placeholder="Nome della tua azienda">
+                        <input type="text" id="companyName" placeholder="Nome della tua azienda" value="MANI VERDI">
                     </div>
                     <div class="form-group">
                         <label for="companyAddress">Indirizzo *</label>
-                        <input type="text" id="companyAddress" placeholder="Via, Numero Civico">
+                        <input type="text" id="companyAddress" placeholder="Via, Numero Civico" value="Veicolo superiore 7">
                     </div>
                     <div class="form-group">
                         <label for="companyCity">Città *</label>
-                        <input type="text" id="companyCity" placeholder="Città">
+                        <input type="text" id="companyCity" placeholder="Città" value="Ghemme">
                     </div>
                     <div class="form-group">
                         <label for="companyCAP">CAP *</label>
-                        <input type="text" id="companyCAP" placeholder="00000">
+                        <input type="text" id="companyCAP" placeholder="00000" value="28074">
                     </div>
                     <div class="form-group">
                         <label for="companyProvince">Provincia *</label>
-                        <input type="text" id="companyProvince" placeholder="XX" maxlength="2">
+                        <input type="text" id="companyProvince" placeholder="XX" maxlength="2" value="NOVARA">
                     </div>
                     <div class="form-group">
                         <label for="companyPIVA">Partita IVA *</label>
-                        <input type="text" id="companyPIVA" placeholder="IT00000000000">
+                        <input type="text" id="companyPIVA" placeholder="IT00000000000" value="02819590031">
                     </div>
                     <div class="form-group">
                         <label for="companyCF">Codice Fiscale</label>
@@ -110,11 +116,11 @@
                     </div>
                     <div class="form-group">
                         <label for="companyPhone">Telefono</label>
-                        <input type="tel" id="companyPhone" placeholder="+39 000 000 0000">
+                        <input type="tel" id="companyPhone" placeholder="+39 000 000 0000" value="3518351604">
                     </div>
                     <div class="form-group">
                         <label for="companyEmail">Email</label>
-                        <input type="email" id="companyEmail" placeholder="info@azienda.it">
+                        <input type="email" id="companyEmail" placeholder="info@azienda.it" value="maniverdi02@gmail.com">
                     </div>
                     <div class="form-group">
                         <label for="companyPEC">PEC</label>
@@ -214,7 +220,7 @@
                         <tbody id="itemsBody">
                             <tr class="item-row">
                                 <td><input type="text" class="item-description" placeholder="Descrizione prodotto/servizio"></td>
-                                <td><input type="number" class="item-quantity" value="1" min="0" step="0.01"></td>
+                                <td><input type="number" class="item-quantity" value="0" min="0" step="0.01"></td>
                                 <td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>
                                 <td>
                                     <select class="item-vat">

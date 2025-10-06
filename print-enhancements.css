@@ -1,0 +1,274 @@
+/* تحسينات إضافية للطباعة والتصميم */
+
+/* تحسين عرض الجدول */
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 11px;
+}
+
+.invoice-table th,
+.invoice-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.invoice-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.invoice-table .amount-column {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* تحسين الصفوف الفارغة */
+.item-row.empty-row {
+    opacity: 0.6;
+}
+
+.item-row.empty-row input {
+    font-style: italic;
+    color: #999;
+}
+
+/* تحسين عرض الكمية الصفرية */
+.item-quantity[value="0"] {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+}
+
+.item-quantity[value="0"]:focus {
+    background-color: #fff;
+    border-color: var(--secondary-color);
+}
+
+/* تحسين عرض الملاحظات */
+.notes-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Print styles محسنة - تصميم رسمي للشركات */
+@media print {
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    body {
+        background: white !important;
+        font-family: 'Times New Roman', serif !important;
+        font-size: 13pt !important;
+        line-height: 1.6 !important;
+        color: black !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-weight: 600 !important;
+    }
+    
+    .invoice-header {
+        border-bottom: 3pt solid black;
+        margin-bottom: 8mm;
+        padding-bottom: 5mm;
+        page-break-inside: avoid;
+        font-size: 12pt;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+    
+    .invoice-title {
+        font-size: 22pt !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        margin-bottom: 5mm !important;
+        text-transform: uppercase;
+        letter-spacing: 3pt;
+        border-bottom: 2pt solid black;
+        padding-bottom: 3mm;
+    }
+    
+    .invoice-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        font-size: 12pt !important;
+        margin: 5mm 0 !important;
+        border: 3pt solid black !important;
+        font-weight: 600 !important;
+    }
+    
+    .invoice-table th {
+        background-color: white !important;
+        color: black !important;
+        border: 2pt solid black !important;
+        padding: 5mm !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        font-size: 11pt !important;
+    }
+    
+    .invoice-table td {
+        border: 1.5pt solid black !important;
+        padding: 4mm !important;
+        vertical-align: top !important;
+        font-size: 11pt !important;
+        font-weight: 600 !important;
+    }
+    
+    .invoice-table .amount-column {
+        text-align: right !important;
+        font-weight: bold !important;
+        font-size: 12pt !important;
+    }
+    
+    /* إخفاء الصفوف الفارغة في الطباعة */
+    .item-row.empty-row {
+        display: none !important;
+    }
+    
+    /* إخفاء العناصر غير المرغوبة */
+    .header,
+    .actions,
+    .btn,
+    .modal,
+    .main-content,
+    button,
+    .btn-remove {
+        display: none !important;
+    }
+    
+    /* تحسين عرض التواريخ والأرقام */
+    .invoice-number,
+    .invoice-details-box {
+        font-size: 12pt !important;
+        margin: 3mm 0 !important;
+        padding: 5mm !important;
+        border: 3pt solid black !important;
+        background: white !important;
+        font-weight: bold !important;
+    }
+    
+    /* تحسين عرض الملاحظات */
+    .notes-section {
+        margin-top: 8mm !important;
+        padding-top: 5mm !important;
+        border-top: 2pt solid black !important;
+        font-size: 11pt !important;
+        font-weight: 600 !important;
+    }
+    
+    /* تحسين عرض الإجماليات */
+    .totals-container {
+        border: 4pt solid black !important;
+        background: white !important;
+        margin-top: 5mm !important;
+        padding: 5mm !important;
+        font-size: 12pt !important;
+        font-weight: bold !important;
+    }
+    
+    .total-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        padding: 3mm 0 !important;
+        border-bottom: 2pt solid black !important;
+        font-weight: bold !important;
+        font-size: 12pt !important;
+    }
+    
+    .total-row.total {
+        border-top: 4pt solid black !important;
+        border-bottom: 4pt solid black !important;
+        font-weight: bold !important;
+        font-size: 16pt !important;
+        margin-top: 4mm !important;
+        padding-top: 4mm !important;
+        background: #f0f0f0 !important;
+    }
+    
+    /* منع تقسيم العناصر المهمة */
+    .invoice-header,
+    .invoice-details-box,
+    .totals-container {
+        page-break-inside: avoid !important;
+    }
+    
+    /* تحسين الهوامش للطباعة */
+    .invoice-preview {
+        position: static !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+    }
+    
+    .invoice-container {
+        max-width: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+    
+    #invoiceContent {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* تحسين معلومات الشركة والعميل */
+    .company-info,
+    .client-info {
+        font-size: 11pt !important;
+        line-height: 1.5 !important;
+        margin: 3mm 0 !important;
+        font-weight: 600 !important;
+    }
+    
+    /* إضافة رقم الصفحة */
+    @page {
+        @bottom-right {
+            content: "صفحة " counter(page) " من " counter(pages);
+            font-size: 9pt;
+            font-family: 'Times New Roman', serif;
+        }
+    }
+}
+
+/* تحسينات للشاشة */
+@media screen {
+    .item-quantity[value="0"] + .item-price {
+        opacity: 0.7;
+    }
+    
+    .item-row:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+}
+
+/* تحسين للأجهزة المحمولة */
+@media (max-width: 768px) {
+    .invoice-table {
+        font-size: 10px;
+    }
+    
+    .invoice-table th,
+    .invoice-table td {
+        padding: 6px 4px;
+    }
+}

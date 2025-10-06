@@ -111,8 +111,8 @@ function fillSampleData() {
     addCustomField('Data Inizio Lavori', 'date');
     document.querySelector('input[name="Data Inizio Lavori"]').value = '2025-09-01';
     
-    // Imposta sconto del 5%
-    document.getElementById('discountPercent').value = '5';
+    // إزالة الخصم الافتراضي - المستخدم يمكنه إضافة خصم حسب الحاجة
+    document.getElementById('discountPercent').value = '0';
     
     // Calcola totali
     setTimeout(() => {
@@ -143,6 +143,18 @@ function fillSampleItems() {
             description: 'Formazione Staff (8 ore)',
             quantity: 8,
             price: 75.00,
+            vat: 22
+        },
+        {
+            description: 'Servizio Consulenza (incluso nel pacchetto)',
+            quantity: 0,
+            price: 150.00,
+            vat: 22
+        },
+        {
+            description: 'Manutenzione Gratuita (primi 3 mesi)',
+            quantity: 0,
+            price: 200.00,
             vat: 22
         },
         {
@@ -211,6 +223,14 @@ function setupEventListeners() {
             hidePreview();
             hideCustomFieldModal();
         }
+    });
+}
+
+function setupItemRowListeners(row) {
+    // Event listeners per input di quantità e prezzo
+    row.querySelectorAll('.item-quantity, .item-price, .item-vat').forEach(input => {
+        input.addEventListener('input', calculateTotals);
+        input.addEventListener('change', calculateTotals);
     });
 }
 
@@ -286,7 +306,7 @@ function addItem() {
     newRow.className = 'item-row';
     newRow.innerHTML = `
         <td><input type="text" class="item-description" placeholder="Descrizione prodotto/servizio"></td>
-        <td><input type="number" class="item-quantity" value="1" min="0" step="0.01"></td>
+        <td><input type="number" class="item-quantity" value="0" min="0" step="0.01"></td>
         <td><input type="number" class="item-price" value="0" min="0" step="0.01"></td>
         <td>
             <select class="item-vat">
@@ -306,6 +326,7 @@ function addItem() {
     `;
     
     itemsBody.appendChild(newRow);
+    setupItemRowListeners(newRow);
     calculateTotals();
 }
 
@@ -318,7 +339,19 @@ function removeItem(button) {
 function calculateItemTotal(row) {
     const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
     const price = parseFloat(row.querySelector('.item-price').value) || 0;
-    const total = quantity * price;
+    const vat = parseFloat(row.querySelector('.item-vat').value) || 0;
+    
+    // إذا كانت الكمية 0 والسعر موجود، المجموع = السعر
+    // إذا كانت الكمية أكبر من 0، المجموع = الكمية × السعر (بغض النظر عن IVA)
+    // إذا كانت الكمية فارغة والسعر موجود وIVA = 0، المجموع = السعر
+    let total;
+    if (quantity === 0 && price > 0) {
+        total = price;  // حالة خاصة: لا توجد كمية لكن هناك سعر
+    } else if (quantity > 0) {
+        total = quantity * price;  // الحالة العادية: كمية × سعر
+    } else {
+        total = 0;  // لا يوجد كمية ولا سعر
+    }
     
     row.querySelector('.item-total').textContent = formatCurrency(total);
 }
@@ -336,7 +369,17 @@ function calculateTotals() {
         const price = parseFloat(row.querySelector('.item-price').value) || 0;
         const vatRate = parseFloat(row.querySelector('.item-vat').value) || 0;
         
-        const itemTotal = quantity * price;
+        // إذا كانت الكمية 0 والسعر موجود، المجموع = السعر
+        // إذا كانت الكمية أكبر من 0، المجموع = الكمية × السعر
+        let itemTotal;
+        if (quantity === 0 && price > 0) {
+            itemTotal = price;  // حالة خاصة: لا توجد كمية لكن هناك سعر
+        } else if (quantity > 0) {
+            itemTotal = quantity * price;  // الحالة العادية: كمية × سعر
+        } else {
+            itemTotal = 0;  // لا يوجد كمية ولا سعر
+        }
+        
         subtotal += itemTotal;
         vatAmount += itemTotal * (vatRate / 100);
     });
@@ -405,11 +448,6 @@ function generateInvoicePreview() {
     
     // Genera HTML della fattura
     invoiceContent.innerHTML = `
-        <div class="company-logo-area">
-            <div style="font-weight: bold; font-size: 14px; color: var(--primary-color);">
-                ${companyData.name}
-            </div>
-        </div>
         
         <div class="invoice-header">
             <div>
@@ -493,6 +531,8 @@ function generateInvoicePreview() {
             Sistema di Preventivi Elettronici Conforme alle Normative Italiane
         </div>
     `;
+    
+    // تم حذف اللوجو لتوفير مساحة في الورقة
 }
 
 function generateCustomFieldsHTML(customFields) {
@@ -588,13 +628,24 @@ function getItems() {
         const price = parseFloat(row.querySelector('.item-price').value) || 0;
         const vat = parseFloat(row.querySelector('.item-vat').value) || 0;
         
-        if (description.trim() || quantity > 0 || price > 0) {
+        if (description.trim() || price > 0) {
+            // إذا كانت الكمية 0 والسعر موجود، المجموع = السعر
+            // إذا كانت الكمية أكبر من 0، المجموع = الكمية × السعر
+            let total;
+            if (quantity === 0 && price > 0) {
+                total = price;  // حالة خاصة: لا توجد كمية لكن هناك سعر
+            } else if (quantity > 0) {
+                total = quantity * price;  // الحالة العادية: كمية × سعر
+            } else {
+                total = 0;  // لا يوجد كمية ولا سعر
+            }
+            
             items.push({
                 description: description || 'Prodotto/Servizio',
                 quantity: quantity,
                 price: price,
                 vat: vat,
-                total: quantity * price
+                total: total
             });
         }
     });
@@ -873,4 +924,23 @@ document.addEventListener('DOMContentLoaded', function() {
     actions.appendChild(saveBtn);
     actions.appendChild(loadBtn);
     actions.appendChild(clearBtn);
+    
+    // إضافة وظيفة مسح حقول الشركة
+    const clearCompanyBtn = document.getElementById('clearCompanyInfo');
+    if (clearCompanyBtn) {
+        clearCompanyBtn.addEventListener('click', function() {
+            if (confirm('هل أنت متأكد من مسح جميع معلومات الشركة؟')) {
+                document.getElementById('companyName').value = '';
+                document.getElementById('companyAddress').value = '';
+                document.getElementById('companyCity').value = '';
+                document.getElementById('companyCAP').value = '';
+                document.getElementById('companyProvince').value = '';
+                document.getElementById('companyPIVA').value = '';
+                document.getElementById('companyCF').value = '';
+                document.getElementById('companyPhone').value = '';
+                document.getElementById('companyEmail').value = '';
+                document.getElementById('companyPEC').value = '';
+            }
+        });
+    }
 });
